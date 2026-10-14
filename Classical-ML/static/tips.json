@@ -1,0 +1,11 @@
+{"_plants":{"tomato":{"en":"Tomato","te":"టమోటా"},"potato":{"en":"Potato","te":"బంగాళాదుంప"},"pepper":{"en":"Pepper bell","te":"క్యాప్సికమ్"}},
+"bacterial":{"name":{"en":"Bacterial Spot","te":"బాక్టీరియల్ స్పాట్"},"tips":{"en":["Use disease-free seed","Avoid overhead watering","Apply a copper-based spray as per the label"],"te":["వ్యాధి లేని విత్తనాలు వాడండి","పై నుంచి నీరు పోయకండి","లేబుల్ ప్రకారం కాపర్ స్ప్రే వాడండి"]}},
+"early_blight":{"name":{"en":"Early Blight","te":"ఎర్లీ బ్లైట్"},"tips":{"en":["Remove infected lower leaves","Rotate crops every season","Water at the base and use a recommended fungicide"],"te":["సోకిన కింది ఆకులను తీసివేయండి","పంట మార్పిడి చేయండి","మొదలులో నీరు పోసి, సిఫారసు చేసిన ఫంగిసైడ్ వాడండి"]}},
+"late_blight":{"name":{"en":"Late Blight","te":"లేట్ బ్లైట్"},"tips":{"en":["Remove and destroy infected plants","Avoid wet leaves and crowding","Use a fungicide as per the label"],"te":["సోకిన మొక్కలను తీసి నాశనం చేయండి","ఆకులు తడవకుండా, మొక్కల మధ్య ఎడం ఉంచండి","లేబుల్ ప్రకారం ఫంగిసైడ్ వాడండి"]}},
+"leaf_mold":{"name":{"en":"Leaf Mold","te":"లీఫ్ మోల్డ్"},"tips":{"en":["Improve air circulation","Reduce humidity","Remove infected leaves"]}},
+"septoria":{"name":{"en":"Septoria Leaf Spot","te":"సెప్టోరియా ఆకు మచ్చ"},"tips":{"en":["Remove spotted lower leaves","Mulch to stop soil splash","Rotate crops"]}},
+"spider":{"name":{"en":"Spider Mites","te":"సాలీడు పురుగులు"},"tips":{"en":["Spray water or neem oil","Keep plants well watered","Remove heavily infested leaves"]}},
+"target":{"name":{"en":"Target Spot","te":"టార్గెట్ స్పాట్"},"tips":{"en":["Remove infected plant debris","Space plants for airflow","Use a recommended fungicide"]}},
+"yellowleaf":{"name":{"en":"Yellow Leaf Curl Virus","te":"పసుపు ఆకు ముడత వైరస్"},"tips":{"en":["Control whiteflies","Remove infected plants","Use resistant varieties"]}},
+"mosaic":{"name":{"en":"Mosaic Virus","te":"మొజాయిక్ వైరస్"},"tips":{"en":["Remove infected plants","Wash hands and tools","Use virus-free seed"]}},
+"healthy":{"name":{"en":"Healthy","te":"ఆరోగ్యకరం"},"tips":{"en":["Water at the base regularly","Use a balanced fertilizer","Inspect leaves weekly"],"te":["మొదలులో క్రమం తప్పకుండా నీరు పోయండి","సమతుల ఎరువు వేయండి","వారానికి ఒకసారి ఆకులను పరిశీలించండి"]}}}

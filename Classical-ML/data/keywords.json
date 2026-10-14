@@ -1,0 +1,11 @@
+{"_plants":{"tomato":["tomato","టమోటా","టమాటా"],"potato":["potato","బంగాళాదుంప","ఆలు"],"pepper":["pepper","capsicum","మిరప","క్యాప్సికమ్"]},
+"bacterial":["bacterial","small spots","water soaked","scab","బాక్టీరియా","చిన్న మచ్చ"],
+"early_blight":["early blight","brown spot","rings","lower leaves","concentric","గోధుమ","వలయ"],
+"late_blight":["late blight","black","wet","rot","white mold","spreading","నల్ల","తడి","కుళ్ళ"],
+"leaf_mold":["mold","mould","yellow top","olive","fuzzy","బూజు","పూత"],
+"septoria":["septoria","white center","tiny spots","small circular","చిన్న గుండ్రని"],
+"spider":["mite","webbing","web","stippling","సాలీడు","పురుగు"],
+"target":["target spot","ring spots","brown rings"],
+"yellowleaf":["curl","yellow leaves","stunted","whitefly","ముడత","పసుపు"],
+"mosaic":["mosaic","mottled","patchy","light and dark","మొజాయిక్"],
+"healthy":["healthy","normal","looks fine","no spots","ఆరోగ్య","బాగుంది"]}

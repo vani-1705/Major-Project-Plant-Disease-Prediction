@@ -1,0 +1,45 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plant Disease Detection</title><link rel="stylesheet" href="style.css"></head><body>
+<header><b>🌿 Plant Disease Detection</b>
+ <a data-s="home">Home</a><a data-s="about">About</a><a data-s="perf">Model Performance</a><a data-s="hist">History</a><a data-s="user">User</a>
+ <div id="acct"></div></header>
+
+<section class="sec" id="home">
+ <h1>Plant Disease <span>Detection</span></h1>
+ <p style="max-width:640px">Upload a leaf photo, type what you see, or speak. The model compares it with a plant disease dataset (tomato, potato, pepper bell) and tells you the disease with simple health tips.</p>
+ <label>Language for text and voice <select id="lang" style="width:auto"><option value="en">English</option><option value="te">తెలుగు (Telugu)</option></select></label>
+ <div class="grid">
+  <div class="card"><h3>🖼️ Image Source</h3><p class="msg">Upload a clear photo of the leaf.</p>
+   <input type="file" id="file" accept="image/*"><img id="preview" alt="Selected leaf"><button id="goImg">Predict Disease</button><p class="msg" id="mImg"></p></div>
+  <div class="card"><h3>📝 Text Source</h3><p class="msg">Describe the problem in English or Telugu.</p>
+   <textarea id="txt" rows="3" placeholder="e.g. brown spots with rings on lower leaves"></textarea><button class="b" id="goTxt">Predict Disease</button><p class="msg" id="mTxt"></p></div>
+  <div class="card"><h3>🎤 Voice Source</h3><p class="msg">Tap, speak, then predict.</p>
+   <button class="p" id="mic">Start Voice</button><textarea id="voiceTxt" rows="2" placeholder="Recognised text appears here"></textarea>
+   <button class="p" id="goVoice">Predict Disease</button><p class="msg" id="mVoice"></p></div>
+ </div>
+ <div class="card" id="results" style="display:none" aria-live="polite"></div>
+</section>
+
+<section class="sec" id="about">
+ <div class="card"><h2>How it works</h2>
+  <p>This system uses a classical machine learning model (SVM, Random Forest or MLP) trained on the PlantVillage dataset to identify diseases of tomato, potato and pepper bell. The same results page appears for all three sources: top 3 matches, sample images and health tips.</p></div>
+ <div class="grid">
+  <div class="card"><h3>🖼️ Image Source</h3><ol><li>Choose a leaf photo.</li><li>The model extracts shape and colour features.</li><li>It compares them with the dataset and shows the top 3 diseases with confidence.</li></ol><img class="banner" src="images/blight.jpg" alt="Leaf with blight"></div>
+  <div class="card"><h3>📝 Text Source</h3><ol><li>Type the symptoms in English or Telugu.</li><li>Your words are matched with disease symptom keywords.</li><li>You get the matching diseases, images and tips. Mention the plant name for better matches.</li></ol></div>
+  <div class="card"><h3>🎤 Voice Source</h3><ol><li>Pick English or Telugu and tap Start Voice.</li><li>Your speech becomes text (Chrome or Edge).</li><li>Tap Predict Disease to follow the same steps as text.</li></ol><img class="banner" src="images/seedling.jpg" alt="Healthy potted plant"></div>
+ </div>
+ <div class="card"><b>Supported plants:</b> Tomato, Potato, Pepper bell. Other plants may give wrong answers, so low-confidence results show "Not sure".</div>
+</section>
+
+<section class="sec" id="perf"><div class="card"><h2>Model Performance</h2><p class="msg">Measured on the held-out test images.</p>
+ <div class="two"><div><canvas id="bar"></canvas></div><div><canvas id="curve"></canvas></div></div></div>
+ <div class="card" style="margin-top:16px"><h3>Confusion Matrix</h3><select id="cmModel" style="width:auto"></select><div class="wide" id="cm"></div><p class="msg" id="cmLegend"></p></div></section>
+
+<section class="sec" id="hist"><div class="card"><h2>Prediction History</h2>
+ <div class="tabs"><button data-t="image" class="on">Image Source</button><button data-t="text">Text Source</button><button data-t="voice">Voice Source</button></div>
+ <div id="histList"></div></div></section>
+
+<section class="sec" id="user"><div class="card" style="max-width:420px"><h2>User Section</h2><div id="userBox"></div></div></section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="script.js"></script></body></html>
