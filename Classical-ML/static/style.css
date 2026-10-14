@@ -20,7 +20,7 @@ header
 #about
       {background-image:linear-gradient(rgba(255,255,255,.15),rgba(255,255,255,.15)),url(images/about.jpg)}
 #perf
-     {background-image:linear-gradient(rgba(255,255,255,.15),rgba(255,255,255,.15)),url(images/model_performance.jpg)}
+     {background-image:linear-gradient(rgba(255,255,255,.15),rgba(255,255,255,.15)),url(images/model performance.jpg)}
 #hist
      {background-image:linear-gradient(rgba(255,255,255,.15),rgba(255,255,255,.15)),url(images/history.jpg)}
 #user
@@ -38,7 +38,9 @@ select,textarea,input
 button
        {font:inherit;background:var(--g);color:#fff;border:0;border-radius:10px;padding:10px 18px;cursor:pointer;margin-top:10px}
 button.b
-        {background:#1d6fb8}button.p{background:#7a52c7}button.o{background:#fff;color:var(--g);border:1px solid var(--g)}
+        {background:#1d6fb8}
+button.p
+        {background:#7a52c7}button.o{background:#fff;color:var(--g);border:1px solid var(--g)}
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #7bc99b}
 .msg
     {color:var(--mute);font-size:14px;margin:6px 0}#preview{max-width:100%;max-height:150px;border-radius:8px;margin-top:8px;display:none}
@@ -58,11 +60,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .card.src
           {color:#fff;background-size:cover;background-position:center;border:1px solid rgba(255,255,255,.25)}
 .card.src.img
-              {background-image:linear-gradient(rgba(8,35,22,.68),rgba(8,35,22,.78)),url(images/image-source.jpg)}
+              {background-image:linear-gradient(rgba(8,35,22,.68),rgba(8,35,22,.78)),url(images/leaf-bg.jpg)}
 .card.src.txt
-             {background-image:linear-gradient(rgba(8,35,22,.68),rgba(8,35,22,.78)),url(images/text-source.jpg)}
+             {background-image:linear-gradient(rgba(8,35,22,.68),rgba(8,35,22,.78)),url(images/leaf-bg.jpg)}
 .card.src.voice
-               {background-image:linear-gradient(rgba(8,35,22,.68),rgba(8,35,22,.78)),url(images/voice-source.jpg)}
+               {background-image:linear-gradient(rgba(8,35,22,.68),rgba(8,35,22,.78)),url(images/leaf-bg.jpg)}
 .card.src .msg
                {color:#d8ecdf}
 .card.src input,.card.src textarea,.card.src select
