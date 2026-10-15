@@ -1,0 +1,8 @@
+flask>=3.0
+numpy
+pillow
+scikit-learn
+joblib
+qiskit
+qiskit-machine-learning
+qiskit-algorithms
