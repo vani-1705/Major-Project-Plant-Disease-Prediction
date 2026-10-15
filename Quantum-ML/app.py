@@ -2,7 +2,10 @@
 Quantum ML - Plant Disease Prediction  (Flask backend)
 Run:  python app.py   ->  http://127.0.0.1:5000
 """
-import os, re, io, csv, json, uuid, pickle, sqlite3, datetime
+import os
+os.environ.setdefault("OMP_NUM_THREADS", "1")      # keep RAM/CPU low on small Render plans
+os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
+import re, io, csv, json, uuid, pickle, sqlite3, datetime, sys, threading, logging
 from pathlib import Path
 
 import numpy as np
@@ -78,40 +81,59 @@ MODEL_FILES = {
     "QSVM": "qsvm.model", "VQC": "vqc.model", "QNN": "qnn.model",
 }
 _cache = {}
+_lock = threading.RLock()
+
+def load_hint(e):
+    """Turn cryptic pickle/dill errors into something actionable."""
+    msg = str(e)
+    py = f"{sys.version_info.major}.{sys.version_info.minor}"
+    if "no locals found" in msg or isinstance(e, (SystemError, TypeError, ValueError)) and "code" in msg.lower():
+        return (f"{msg}  ->  The model file was saved with a DIFFERENT Python version than this server "
+                f"(server = Python {py}). Set PYTHON_VERSION on Render to the same version as your Colab "
+                f"(run `import sys; print(sys.version)` in Colab).")
+    return msg
 
 def get_model(name):
     if name in _cache:
         return _cache[name]
-    path = find(MODEL_FILES[name])
-    if path is None:
-        raise FileNotFoundError(f"{MODEL_FILES[name]} not found in models/")
-    if name in ("SVM", "Random Forest", "MLP"):
+    with _lock:                                   # warm-up thread and requests never load twice
+        if name in _cache:
+            return _cache[name]
+        path = find(MODEL_FILES[name])
+        if path is None:
+            raise FileNotFoundError(f"{MODEL_FILES[name]} not found in models/")
         try:
-            with open(path, "rb") as f:
-                m = pickle.load(f)
-        except Exception:
-            import joblib
-            m = joblib.load(path)
-    else:
-        from qiskit_machine_learning.algorithms import QSVC, VQC, NeuralNetworkClassifier
-        cls = {"QSVM": QSVC, "VQC": VQC, "QNN": NeuralNetworkClassifier}[name]
-        m = cls.load(str(path))
-    _cache[name] = m
-    return m
+            if name in ("SVM", "Random Forest", "MLP"):
+                try:
+                    with open(path, "rb") as f:
+                        m = pickle.load(f)
+                except Exception:
+                    import joblib
+                    m = joblib.load(path)
+            else:
+                from qiskit_machine_learning.algorithms import QSVC, VQC, NeuralNetworkClassifier
+                cls = {"QSVM": QSVC, "VQC": VQC, "QNN": NeuralNetworkClassifier}[name]
+                m = cls.load(str(path))
+        except Exception as e:
+            app.logger.exception("Loading model %s failed", name)
+            raise RuntimeError(f"Could not load {name}: {load_hint(e)}") from e
+        _cache[name] = m
+        return m
 
 _pp = None
 def get_pp():
     global _pp
-    if _pp is None:
-        path = find("preprocess.pkl")
-        if path is None:
-            raise FileNotFoundError("preprocess.pkl not found in models/")
-        try:
-            with open(path, "rb") as f:
-                _pp = pickle.load(f)
-        except Exception:
-            import joblib
-            _pp = joblib.load(path)
+    with _lock:
+        if _pp is None:
+            path = find("preprocess.pkl")
+            if path is None:
+                raise FileNotFoundError("preprocess.pkl not found in models/")
+            try:
+                with open(path, "rb") as f:
+                    _pp = pickle.load(f)
+            except Exception:
+                import joblib
+                _pp = joblib.load(path)
     return _pp
 
 def expected_dim(pp):
@@ -172,6 +194,21 @@ def run_model(name, X):
         except Exception:
             pass
     return label, conf
+
+def warmup():
+    """Load slow quantum models in the background so the first request doesn't hit the gunicorn timeout."""
+    names = [n.strip() for n in os.environ.get("WARMUP_MODELS", "QSVM,VQC,QNN").split(",") if n.strip()]
+    for n in names:
+        try:
+            if n in MODEL_FILES:
+                get_model(n)
+                app.logger.info("Warm-up: %s loaded", n)
+        except Exception as e:
+            app.logger.error("Warm-up failed for %s: %s", n, e)
+    try:
+        get_pp()
+    except Exception as e:
+        app.logger.error("Warm-up failed for preprocess.pkl: %s", e)
 
 # ------------------------------------------------------------------ samples
 IMG_EXT = {".jpg", ".jpeg", ".png", ".webp"}
@@ -235,6 +272,10 @@ def on_error(e):
     return jsonify(error=f"{type(e).__name__}: {e}"), 500
 
 # ------------------------------------------------------------------ routes
+@app.get("/health")
+def health():
+    return jsonify(ok=True, python=sys.version.split()[0], loaded=list(_cache))
+
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -255,7 +296,15 @@ def api_predict():
         save_history(res, url)
         return jsonify(res)
     except Exception as e:
-        return jsonify(error=str(e)), 500
+        app.logger.exception("Prediction failed (model=%s)", model)
+        return jsonify(error=f"{type(e).__name__}: {e}"), 500
+
+def has_word(w, text):
+    """English keywords match whole words ('rot' must not match 'protect'); Telugu keywords match as substrings."""
+    w = w.lower()
+    if w.isascii():
+        return re.search(r"(?<![a-z])" + re.escape(w) + r"(?![a-z])", text) is not None
+    return w in text
 
 @app.post("/api/predict_text")
 def api_predict_text():
@@ -265,11 +314,11 @@ def api_predict_text():
     crops = KEYWORDS.get("crops", {})
     best, best_score = None, 0
     for key, words in KEYWORDS.get("diseases", {}).items():
-        score = sum(3 for w in words if w.lower() in text)
+        score = sum(3 for w in words if has_word(w, text))
         if score == 0:
             continue
         for crop, cw in crops.items():
-            if key.startswith(crop) and any(w.lower() in text for w in cw):
+            if key.startswith(crop) and any(has_word(w, text) for w in cw):
                 score += 2
         if score > best_score:
             best, best_score = key, score
@@ -380,5 +429,9 @@ def me():
         u = c.execute("SELECT name,email,login_count FROM users WHERE email=?", (session["email"],)).fetchone()
     return jsonify(logged_in=True, **dict(u)) if u else jsonify(logged_in=False)
 
+logging.basicConfig(level=logging.INFO)
+if os.environ.get("WARMUP", "1") == "1":
+    threading.Thread(target=warmup, daemon=True).start()
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)
