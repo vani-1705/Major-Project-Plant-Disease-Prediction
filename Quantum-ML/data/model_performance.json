@@ -1,0 +1,8 @@
+{
+  "SVM":           {"accuracy": 0.78, "precision": 0.76, "recall": 0.74, "f1": 0.75},
+  "Random Forest": {"accuracy": 0.85, "precision": 0.83, "recall": 0.81, "f1": 0.82},
+  "MLP":           {"accuracy": 0.88, "precision": 0.86, "recall": 0.84, "f1": 0.85},
+  "QSVM":          {"accuracy": 0.92, "precision": 0.90, "recall": 0.88, "f1": 0.89},
+  "VQC":           {"accuracy": 0.95, "precision": 0.93, "recall": 0.91, "f1": 0.92},
+  "QNN":           {"accuracy": 0.97, "precision": 0.96, "recall": 0.94, "f1": 0.95}
+}
