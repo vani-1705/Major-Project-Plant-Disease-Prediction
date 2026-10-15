@@ -6,6 +6,8 @@ import os, re, io, csv, json, uuid, pickle, sqlite3, datetime
 from pathlib import Path
 
 import numpy as np
+import cv2
+from skimage.feature import hog
 from PIL import Image
 from flask import Flask, request, jsonify, session, render_template
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -140,28 +142,19 @@ def apply_pp(pp, X):
             X = v.transform(X)
     return X
 
-# >>> EDIT HERE if your Colab feature extraction is different <<<
-def feature_candidates(img):
-    """Yield feature vectors. The one whose length matches preprocess.pkl is used."""
-    rgb, gray = img.convert("RGB"), img.convert("L")
-    for s in (64, 32, 128, 224, 100, 48, 16, 8, 256):
-        yield np.asarray(rgb.resize((s, s)), dtype=np.float32).ravel() / 255.0
-        yield np.asarray(gray.resize((s, s)), dtype=np.float32).ravel() / 255.0
-    arr = np.asarray(rgb.resize((128, 128)))
-    for b in (8, 16, 32):
-        yield np.concatenate([np.histogram(arr[..., c], bins=b, range=(0, 255))[0] for c in range(3)]).astype(np.float32)
+def colab_features(img):
+    """Exactly the features() function from the Colab notebook (HOG 324 + colour hist 64 = 388)."""
+    bgr = cv2.cvtColor(np.asarray(img.convert("RGB")), cv2.COLOR_RGB2BGR)
+    bgr = cv2.resize(bgr, (64, 64))
+    gray = cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY)
+    h = hog(gray, pixels_per_cell=(16, 16))
+    hist = cv2.calcHist([bgr], [0, 1, 2], None, [4, 4, 4], [0, 256] * 3).flatten()
+    return np.concatenate([h, hist])
 
 def extract(img):
-    pp = get_pp()
-    n = expected_dim(pp)
-    vec = None
-    for v in feature_candidates(img):
-        if n is None or len(v) == n:
-            vec = v
-            break
-    if vec is None:
-        raise ValueError(f"preprocess.pkl expects {n} raw features per image. Put your Colab feature-extraction code in feature_candidates() in app.py.")
-    return np.asarray(apply_pp(pp, vec.reshape(1, -1)))
+    """388 raw features -> StandardScaler -> PCA(4) -> MinMax(0..pi) -> clip (same as Colab prep())."""
+    X = apply_pp(get_pp(), colab_features(img).reshape(1, -1))
+    return np.clip(np.asarray(X), 0, np.pi)
 
 def run_model(name, X):
     m = get_model(name)
