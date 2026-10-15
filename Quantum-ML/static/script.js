@@ -12,7 +12,7 @@ async function api(url, opts) {
   const r = await fetch(url, opts);
   let d = {};
   try { d = await r.json(); } catch (e) {}
-  if (!r.ok) throw new Error(d.error || "Request failed");
+  if (!r.ok) throw new Error(d.error || `Request failed (HTTP ${r.status}) - server timeout/crash, check Render logs`);
   return d;
 }
 const postJSON = (url, body) =>
