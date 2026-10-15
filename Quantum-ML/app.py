@@ -24,8 +24,13 @@ app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
 def find(name):
     """Look for a file in models/ , data/ or project root."""
     for d in (MODELS, DATA, BASE):
+        if not d.exists():
+            continue
         if (d / name).exists():
             return d / name
+        for p in d.iterdir():          # case-insensitive match (Linux/Render)
+            if p.name.lower() == name.lower():
+                return p
     return None
 
 def load_json(name, default):
@@ -67,7 +72,7 @@ CLASSES = load_classes()
 # ------------------------------------------------------------------ models
 MODEL_FILES = {
     "SVM": "svm.pkl", "Random Forest": "rf.pkl", "MLP": "mlp.pkl",
-    "QSVM": "qsvm.model", "VQC": "VQC.model", "QNN": "qnn.model",
+    "QSVM": "qsvm.model", "VQC": "vqc.model", "QNN": "qnn.model",
 }
 _cache = {}
 
@@ -111,6 +116,8 @@ def expected_dim(pp):
         objs = list(pp.values())
     elif hasattr(pp, "steps"):
         objs = [s[1] for s in pp.steps]
+    elif isinstance(pp, (tuple, list)):
+        objs = list(pp)
     else:
         objs = [pp]
     for o in objs:
@@ -123,9 +130,14 @@ def apply_pp(pp, X):
     if hasattr(pp, "transform"):
         return pp.transform(X)
     if isinstance(pp, dict):
-        for v in pp.values():
-            if hasattr(v, "transform"):
-                X = v.transform(X)
+        steps = list(pp.values())
+    elif isinstance(pp, (tuple, list)):
+        steps = list(pp)               # preprocess.pkl = (StandardScaler, PCA, MinMaxScaler)
+    else:
+        steps = []
+    for v in steps:
+        if hasattr(v, "transform"):
+            X = v.transform(X)
     return X
 
 # >>> EDIT HERE if your Colab feature extraction is different <<<
@@ -148,7 +160,7 @@ def extract(img):
             vec = v
             break
     if vec is None:
-        raise ValueError(f"preprocess.pkl expects {n} features. Edit feature_candidates() in app.py to match your Colab code.")
+        raise ValueError(f"preprocess.pkl expects {n} raw features per image. Put your Colab feature-extraction code in feature_candidates() in app.py.")
     return np.asarray(apply_pp(pp, vec.reshape(1, -1)))
 
 def run_model(name, X):
