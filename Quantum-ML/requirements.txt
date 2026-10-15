@@ -1,8 +1,10 @@
 flask>=3.0
+gunicorn
 numpy
-pillow
-scikit-learn
+scipy==1.17.1
+scikit-learn==1.9.1
 joblib
-qiskit
-qiskit-machine-learning
-qiskit-algorithms
+pillow
+qiskit==2.5.2
+qiskit-algorithms==0.4.0
+qiskit-machine-learning==0.9.1
