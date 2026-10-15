@@ -25,11 +25,11 @@ button,input,select,textarea{font:inherit}
 .page.active{display:block}
 .page::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,12,40,.25),rgba(5,12,40,.55));pointer-events:none}
 .page>*{position:relative}
-#home{background-image:url(images/home.jpg),linear-gradient(135deg,#0b1f4d 0%,#0e3a6b 50%,#064e3b 100%)}
-#about{background-image:url(images/about.jpg),linear-gradient(135deg,#0b1f4d 0%,#0e3a6b 50%,#064e3b 100%)}
-#graphs{background-image:url(images/model_graphs.jpg),linear-gradient(135deg,#0b1f4d 0%,#0e3a6b 50%,#064e3b 100%)}
-#history{background-image:url(images/history.jpg),linear-gradient(135deg,#0b1f4d 0%,#0e3a6b 50%,#064e3b 100%)}
-#user{background-image:url(images/background.jpg),linear-gradient(135deg,#0b1f4d 0%,#0e3a6b 50%,#064e3b 100%);background-position:right center}
+#home{background-image:url(images/Home.jpg),linear-gradient(135deg,#0b1f4d 0%,#0e3a6b 50%,#064e3b 100%)}
+#about{background-image:url(images/About.jpg),linear-gradient(135deg,#0b1f4d 0%,#0e3a6b 50%,#064e3b 100%)}
+#graphs{background-image:url(images/Model_Graphs.jpg),linear-gradient(135deg,#0b1f4d 0%,#0e3a6b 50%,#064e3b 100%)}
+#history{background-image:url(images/History.jpg),linear-gradient(135deg,#0b1f4d 0%,#0e3a6b 50%,#064e3b 100%)}
+#user{background-image:url(images/Background.jpg),linear-gradient(135deg,#0b1f4d 0%,#0e3a6b 50%,#064e3b 100%);background-position:right center}
 
 /* ---------- cards: white, readable text ---------- */
 .card{background:var(--card);color:var(--text);border-radius:16px;padding:22px 24px;margin-bottom:22px;
