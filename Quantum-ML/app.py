@@ -10,6 +10,7 @@ import cv2
 from skimage.feature import hog
 from PIL import Image
 from flask import Flask, request, jsonify, session, render_template
+from werkzeug.exceptions import HTTPException
 from werkzeug.security import generate_password_hash, check_password_hash
 
 BASE = Path(__file__).parent
@@ -222,6 +223,16 @@ def save_history(res, image):
         c.execute("INSERT INTO history(owner,created,disease,image,source,model) VALUES(?,?,?,?,?,?)",
                   (owner(), datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
                    res["disease"], image, res["source"], res["model"]))
+
+# ------------------------------------------------------------------ errors
+@app.errorhandler(Exception)
+def on_error(e):
+    """Always return JSON for /api/ errors so the page shows the real message."""
+    if not request.path.startswith("/api/"):
+        return e if isinstance(e, HTTPException) else ("Server error", 500)
+    if isinstance(e, HTTPException):
+        return jsonify(error=e.description), e.code
+    return jsonify(error=f"{type(e).__name__}: {e}"), 500
 
 # ------------------------------------------------------------------ routes
 @app.route("/")
