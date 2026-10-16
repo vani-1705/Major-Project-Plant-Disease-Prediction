@@ -2,7 +2,7 @@
 
 A web app that finds plant diseases from a leaf image, text, or voice and gives simple health tips. Part of the major project "Quantum ML vs Classical ML on Plant Disease Prediction".
 
-🔗 Live demo: https://YOUR-QUANTUM-RENDER-LINK.onrender.com
+🔗 Live demo: https://major-project-plant-disease-prediction.onrender.com
 
 ## ✨ Features
 
