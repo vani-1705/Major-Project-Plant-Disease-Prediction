@@ -1,7 +1,0 @@
-,type,accuracy,precision,recall,f1,train_time_sec
-SVM,classical,0.633,0.634,0.633,0.623,0.004
-Random Forest,classical,0.567,0.566,0.567,0.566,0.107
-MLP,classical,0.567,0.567,0.567,0.565,0.302
-QSVM,quantum,0.4,0.374,0.4,0.375,24.721
-VQC,quantum,0.4,0.394,0.4,0.395,36.476
-QNN,quantum,0.383,0.367,0.383,0.368,36.595
