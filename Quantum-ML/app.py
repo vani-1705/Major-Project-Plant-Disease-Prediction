@@ -20,11 +20,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 BASE = Path(__file__).parent
 MODELS, DATA, STATIC = BASE / "models", BASE / "data", BASE / "static"
 UPLOADS, SAMPLES = STATIC / "uploads", STATIC / "samples"
-for _p in (str(BASE), str(MODELS)):          # qml_runtime.py can be next to app.py OR inside models/
-    if _p not in sys.path:
-        sys.path.insert(0, _p)
-UPLOADS.mkdir(parents=True, exist_ok=True)
-DATA.mkdir(exist_ok=True)
 
 app = Flask(__name__, static_folder=str(STATIC), static_url_path="/static")
 app.secret_key = os.environ.get("SECRET_KEY", "change-this-secret")
@@ -97,6 +92,23 @@ def load_hint(e):
                 "version in requirements.txt.")
     return msg
 
+_qml = None
+def get_qml():
+    """Load qml_runtime.py directly from its file, so there is no sys.path / circular-import problem."""
+    global _qml
+    if _qml is None:
+        import importlib.util
+        path = BASE / "qml_runtime.py"
+        if not path.exists():
+            path = find("qml_runtime.py")
+        if path is None:
+            raise FileNotFoundError("qml_runtime.py not found (put it next to app.py)")
+        spec = importlib.util.spec_from_file_location("qml_runtime_file", str(path))
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)          # real error (if any) is raised here
+        _qml = mod
+    return _qml
+
 def get_model(name):
     if name in _cache:
         return _cache[name]
@@ -110,8 +122,7 @@ def get_model(name):
             if name in ("SVM", "Random Forest", "MLP"):
                 m = joblib.load(path)
             else:
-                import qml_runtime                # copied from Colab out/ folder
-                m = qml_runtime.load(name, path.parent)
+                m = get_qml().load(name, path.parent)
         except Exception as e:
             app.logger.exception("Loading model %s failed", name)
             raise RuntimeError(f"Could not load {name}: {load_hint(e)}") from e
