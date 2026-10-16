@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quantum ML - Plant Disease Prediction</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-icon">⚛️</span>
+    <div><b>Quantum ML</b><small>Plant Disease Prediction</small></div>
+  </div>
+  <nav class="nav">
+    <a href="#" data-page="home" class="active">🏠 Home</a>
+    <a href="#" data-page="about">ℹ️ About</a>
+    <a href="#" data-page="graphs">📊 Model Graphs</a>
+    <a href="#" data-page="history">🕒 History</a>
+    <a href="#" data-page="user">👤 User</a>
+  </nav>
+</header>
+
+<!-- ================= HOME ================= -->
+<section id="home" class="page active">
+  <div class="card hero">
+    <h1>Quantum ML</h1>
+    <h2>Plant Disease Prediction</h2>
+    <p>Plant diseases reduce crop yield and farmer income every year. This website uses classical and
+       quantum machine learning (SVM, Random Forest, MLP, QSVM, VQC and QNN) to detect diseases in
+       Potato leaves early. Give a leaf photo, describe the problem in Telugu or
+       English, or simply speak, and get the disease name with health tips to protect your crop.</p>
+  </div>
+
+  <h3 class="section-title">Choose Your Source</h3>
+  <div class="sources">
+
+    <div class="card src blue">
+      <div class="src-icon">🎞️</div>
+      <h4>Image Source</h4>
+      <p>Upload a plant leaf image to predict the disease.</p>
+      <select id="modelSel">
+        <option>QSVM</option><option>VQC</option><option>QNN</option>
+        <option>SVM</option><option>Random Forest</option><option>MLP</option>
+      </select>
+      <input type="file" id="imgFile" accept="image/*" hidden>
+      <button class="btn" id="chooseBtn">Choose File</button>
+      <img id="preview" class="preview" alt="" hidden>
+      <button class="btn solid" id="predictImg">Predict Disease</button>
+    </div>
+
+    <div class="card src green">
+      <div class="src-icon">💬</div>
+      <h4>Text Source</h4>
+      <p>Type the problem in Telugu or English.</p>
+      <textarea id="txt" rows="4" placeholder="e.g. Potato leaves have brown spots with rings  /  బంగాళదుంప ఆకులపై గోధుమ మచ్చలు ఉన్నాయి"></textarea>
+      <button class="btn solid" id="predictTxt">Predict Disease</button>
+    </div>
+
+    <div class="card src pink">
+      <div class="src-icon">🗣️</div>
+      <h4>Voice Source</h4>
+      <p>Speak in Telugu or English.</p>
+      <select id="voiceLang">
+        <option value="te-IN">Telugu (తెలుగు)</option>
+        <option value="en-IN">English</option>
+      </select>
+      <button class="btn" id="speakBtn">🎙️ Speak</button>
+      <textarea id="voiceTxt" rows="3" placeholder="Your speech will appear here..."></textarea>
+      <button class="btn solid" id="predictVoice">Predict Disease</button>
+    </div>
+
+    <div class="card how">
+      <h4>🌿 How It Works?</h4>
+      <ol>
+        <li>Choose a source (Image / Text / Voice)</li>
+        <li>Give the input (photo / text / speech)</li>
+        <li>The model analyses the data</li>
+        <li>Get the disease name with health tips</li>
+      </ol>
+    </div>
+  </div>
+
+  <div id="result" class="card result" hidden></div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about" class="page">
+  <div class="card">
+    <h2 class="title">About Quantum ML</h2>
+    <p>Quantum Machine Learning (QML) combines the power of quantum computing with machine learning to solve
+       complex problems faster and more accurately. It uses quantum principles like superposition,
+       entanglement and parallelism to analyse data and make better predictions, especially in challenging
+       real-world scenarios like plant disease detection.</p>
+  </div>
+
+  <div class="grid3">
+    <div class="card">
+      <h3>⚛️ QSVM</h3>
+      <p>Quantum Support Vector Machine uses a quantum kernel to find the best decision boundary between
+         healthy and diseased leaves, improving accuracy and speed.</p>
+    </div>
+    <div class="card">
+      <h3>🔀 VQC</h3>
+      <p>Variational Quantum Classifier is a hybrid quantum-classical approach. A parameterised quantum
+         circuit is trained by a classical optimizer to classify the data efficiently.</p>
+    </div>
+    <div class="card">
+      <h3>🧠 QNN</h3>
+      <p>Quantum Neural Network leverages quantum circuits as neural network layers to learn complex
+         patterns in plant leaf data.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>How Sources Work?</h3>
+    <div class="flow">
+      <div class="step"><b>🎞️ Image / 💬 Text / 🗣️ Voice</b><span>Input from the user. Voice is converted to text in the browser.</span></div>
+      <div class="arrow">➜</div>
+      <div class="step"><b>⚙️ Preprocessing</b><span>Image is resized, scaled and reduced to features. Text is matched with keywords (Telugu / English).</span></div>
+      <div class="arrow">➜</div>
+      <div class="step"><b>⚛️ Model</b><span>SVM, Random Forest, MLP, QSVM, VQC or QNN predicts the disease class.</span></div>
+      <div class="arrow">➜</div>
+      <div class="step"><b>🌿 Prediction</b><span>Disease name, image and health tips are shown.</span></div>
+    </div>
+  </div>
+
+  <div class="note">
+    ⚠️ <b>Note:</b> Only <b>Potato</b> leaves (Early blight, Late blight, Healthy) are included in the trained models.
+    Other plants are not supported and may not work properly.
+  </div>
+</section>
+
+<!-- ================= MODEL GRAPHS ================= -->
+<section id="graphs" class="page">
+  <div class="card"><h2 class="title">Model Performance Comparison</h2>
+    <p>SVM, Random Forest, MLP, QSVM, VQC and QNN compared on accuracy, precision, recall, F1 score and confusion matrix.</p>
+  </div>
+  <div class="card"><canvas id="cmpChart" height="110"></canvas></div>
+  <div id="graphGrid" class="grid3 models"></div>
+</section>
+
+<!-- ================= HISTORY ================= -->
+<section id="history" class="page">
+  <div class="card">
+    <h2 class="title">Prediction History</h2>
+    <p id="histMsg"></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Date &amp; Time</th><th>Disease Name</th><th>Image</th></tr></thead>
+        <tbody id="histBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= USER ================= -->
+<section id="user" class="page">
+  <div class="card account">
+    <h2 class="title">User Account</h2>
+    <div id="loggedBox" hidden>
+      <p class="hello">Welcome, <b id="uName"></b></p>
+      <p id="uEmail"></p>
+    </div>
+    <div id="formBox">
+      <label>Full Name<input id="fName" type="text" placeholder="Enter your name"></label>
+      <label>Email<input id="fEmail" type="email" placeholder="Enter your email"></label>
+      <label>Password
+        <span class="pw"><input id="fPass" type="password" placeholder="Enter your password"><button type="button" id="eye">👁️</button></span>
+      </label>
+    </div>
+    <p class="count">Login Count: <b id="loginCount">0</b></p>
+    <p id="authMsg" class="msg"></p>
+    <div id="authBtns" class="row">
+      <button class="btn solid" id="signupBtn">Sign Up</button>
+      <button class="btn" id="loginBtn">Login</button>
+    </div>
+    <div class="or"><span>OR</span></div>
+    <button class="btn logout" id="logoutBtn" hidden>Logout</button>
+  </div>
+</section>
+
+<div id="toast" class="toast" hidden></div>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
