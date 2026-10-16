@@ -1,4 +1,4 @@
-# ⚛️ Quantum ML - Plant Disease Prediction (Potato)
+# ⚛️ Quantum ML - Plant Disease Prediction
 
 A web app that finds potato leaf diseases from a leaf image, text, or voice using quantum models (QSVM, VQC, QNN) and compares them with classical models (SVM, Random Forest, MLP). Part of the major project "Quantum ML vs Classical ML on Plant Disease Prediction".
 
