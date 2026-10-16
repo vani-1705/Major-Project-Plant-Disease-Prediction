@@ -20,6 +20,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 BASE = Path(__file__).parent
 MODELS, DATA, STATIC = BASE / "models", BASE / "data", BASE / "static"
 UPLOADS, SAMPLES = STATIC / "uploads", STATIC / "samples"
+UPLOADS.mkdir(parents=True, exist_ok=True)   # not in git (.gitignore), so create on start
+DATA.mkdir(exist_ok=True)
 
 app = Flask(__name__, static_folder=str(STATIC), static_url_path="/static")
 app.secret_key = os.environ.get("SECRET_KEY", "change-this-secret")
