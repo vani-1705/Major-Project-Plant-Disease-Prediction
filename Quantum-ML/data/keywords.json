@@ -1,0 +1,10 @@
+{
+  "crops": {
+    "Potato": ["potato", "potatoes", "aloo", "బంగాళదుంప", "బంగాళాదుంప", "ఆలూ"]
+  },
+  "diseases": {
+    "Potato___Early_blight": ["early blight", "brown spot", "brown spots", "ring", "rings", "concentric", "target", "lower leaves", "ఎర్లీ", "గోధుమ", "మచ్చ", "వలయ"],
+    "Potato___Late_blight": ["late blight", "water soaked", "water-soaked", "dark patches", "black", "blackish", "rot", "rotting", "white mold", "white fungus", "లేట్", "నల్ల", "కుళ్ళ", "ముడత"],
+    "Potato___healthy": ["healthy", "normal", "fresh", "no disease", "no spots", "green", "ఆరోగ్య", "పచ్చ"]
+  }
+}

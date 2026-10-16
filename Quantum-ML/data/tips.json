@@ -1,0 +1,45 @@
+{
+  "Potato___Early_blight": {
+    "name": "Potato Early Blight",
+    "tips_en": [
+      "Remove and destroy infected leaves.",
+      "Rotate crops; do not plant potato in the same field every year.",
+      "Spray a fungicide such as mancozeb or chlorothalonil at the dose advised by your agriculture officer.",
+      "Water at the base of the plant and avoid wetting the leaves."
+    ],
+    "tips_te": [
+      "తెగులు సోకిన ఆకులను తొలగించి నాశనం చేయండి.",
+      "ఒకే పొలంలో ప్రతి సంవత్సరం బంగాళదుంప వేయకుండా పంట మార్పిడి చేయండి.",
+      "మ్యాంకోజెబ్ లేదా క్లోరోథలోనిల్ వంటి శిలీంద్రనాశకాన్ని వ్యవసాయ అధికారి సూచించిన మోతాదులో పిచికారీ చేయండి.",
+      "ఆకులపై నీరు పడకుండా మొక్కల మొదళ్లకు నీరు పెట్టండి."
+    ]
+  },
+  "Potato___Late_blight": {
+    "name": "Potato Late Blight",
+    "tips_en": [
+      "Late blight spreads fast in cool, humid weather, so check the field often.",
+      "Remove and destroy infected plants and tubers.",
+      "Use a fungicide such as metalaxyl + mancozeb as advised by an expert.",
+      "Keep good drainage in the field and use certified seed."
+    ],
+    "tips_te": [
+      "చల్లని, తేమ వాతావరణంలో ఈ తెగులు వేగంగా వ్యాపిస్తుంది; పొలాన్ని తరచుగా పరిశీలించండి.",
+      "తెగులు సోకిన మొక్కలను, దుంపలను పొలం నుండి తీసివేసి నాశనం చేయండి.",
+      "మెటాలాక్సిల్ + మ్యాంకోజెబ్ వంటి శిలీంద్రనాశకాన్ని నిపుణుల సలహా మేరకు వాడండి.",
+      "పొలంలో నీరు నిలవకుండా మురుగు నీటి పారుదల ఏర్పాటు చేయండి; ధృవీకరించిన విత్తనాలు వాడండి."
+    ]
+  },
+  "Potato___healthy": {
+    "name": "Healthy Potato Leaf",
+    "tips_en": [
+      "The leaf looks healthy; no treatment is needed now.",
+      "Keep checking the field regularly.",
+      "Follow balanced fertilizer and proper irrigation."
+    ],
+    "tips_te": [
+      "ఆకు ఆరోగ్యంగా ఉంది, ప్రస్తుతం ఎలాంటి చికిత్స అవసరం లేదు.",
+      "క్రమం తప్పకుండా పొలాన్ని పరిశీలిస్తూ ఉండండి.",
+      "సమతుల ఎరువులు, సరైన నీటి పారుదల పాటించండి."
+    ]
+  }
+}
