@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+.ipynb_checkpoints/
+
+# runtime-generated
+data/app.db
+static/uploads/
+
+# not needed by website
+data/split*.npz
