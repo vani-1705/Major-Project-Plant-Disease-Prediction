@@ -4,7 +4,7 @@ This project checks whether **quantum machine learning** can detect plant leaf d
 
 ## 🌐 Live demos
 
-- 🌿 Classical ML: https://YOUR-QUANTUM-RENDER-LINK.onrender.com
+- 🌿 Classical ML: https://major-project-plant-disease-prediction.onrender.com
 - ⚛️ Quantum ML: https://major-project-plant-disease-prediction-4l0d.onrender.com
 
 ## 🎯 The idea
